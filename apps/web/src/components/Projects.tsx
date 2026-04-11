@@ -94,9 +94,13 @@ function ProjectCard({ img, name, year, layoutId, onOpen }: ProjectCardProps) {
 function Lightbox({ selected, onClose }: { selected: Selected | null; onClose: () => void }) {
   useEffect(() => {
     if (!selected) return
+    window.dispatchEvent(new Event('lenis:lock'))
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
+    return () => {
+      window.dispatchEvent(new Event('lenis:unlock'))
+      window.removeEventListener('keydown', handler)
+    }
   }, [selected, onClose])
 
   return (

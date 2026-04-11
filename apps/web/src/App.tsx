@@ -101,6 +101,11 @@ function HomePage() {
       }
     })
 
+    const handleLock = () => lenis.stop()
+    const handleUnlock = () => lenis.start()
+    window.addEventListener('lenis:lock', handleLock)
+    window.addEventListener('lenis:unlock', handleUnlock)
+
     function raf(time: number) {
       lenis.raf(time)
       requestAnimationFrame(raf)
@@ -110,6 +115,8 @@ function HomePage() {
     return () => {
       lenis.destroy()
       gear.destroy()
+      window.removeEventListener('lenis:lock', handleLock)
+      window.removeEventListener('lenis:unlock', handleUnlock)
     }
   }, [])
 

@@ -75,10 +75,16 @@
 
   .project {
     flex: 1;
-    aspect-ratio: 7/5;
+    aspect-ratio: 3/4;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .project {
+      aspect-ratio: 7/5;
+    }
   }
 
   .project-img {
