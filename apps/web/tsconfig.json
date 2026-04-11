@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@aqua/ui": ["../../packages/ui/src"],
+      "@aqua/ui/*": ["../../packages/ui/src/*"]
+    }
+  },
+  "include": ["src", "vite-env.d.ts"]
+}
