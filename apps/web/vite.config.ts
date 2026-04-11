@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/A9ua-protfolio/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
