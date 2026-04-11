@@ -7,24 +7,26 @@ interface ProjectData {
   year: string
 }
 
+const base = import.meta.env.BASE_URL
+
 const originalProjects: ProjectData[] = [
-  { img: '/image/g-1.webp', name: 'Aethel Unit - 07', year: 'September' },
-  { img: '/image/g-2.webp', name: 'ニッカボニー', year: 'August' },
-  { img: '/image/g-3.webp', name: 'ニッカボニー', year: 'October' },
-  { img: '/image/g-4.webp', name: 'うちはマダラ 宇智波斑', year: 'December' },
-  { img: '/image/g-16.webp', name: 'うずまきナルト 漩涡鸣人', year: '2025' },
-  { img: '/image/g-5.webp', name: 'Aethel Unit - 07', year: 'July' },
-  { img: '/image/g-6.png', name: 'Pressure Suit', year: 'June' },
-  { img: '/image/g-10-1.webp', name: 'Music Time', year: 'December' },
-  { img: '/image/g-11.webp', name: 'Follow Me', year: 'November' },
-  { img: '/image/g-12.webp', name: 'Summer', year: 'November' },
-  { img: '/image/g-7.webp', name: 'Aethel Unit - 07', year: 'July' },
-  { img: '/image/g-8.webp', name: 'ニッカボニー', year: 'July' },
-  { img: '/image/g-9.webp', name: 'UnAethel Unit - 07', year: 'October' },
-  { img: '/image/g-13.webp', name: 'Ready For Hight', year: 'February' },
-  { img: '/image/g-14.webp', name: 'Terminate', year: 'February' },
-  { img: '/image/g-15.webp', name: 'Train', year: 'December' },
-  { img: '/image/g-17.webp', name: 'Gundam SEED', year: 'December' },
+  { img: `${base}image/g-1.webp`, name: 'Aethel Unit - 07', year: 'September' },
+  { img: `${base}image/g-2.webp`, name: 'ニッカボニー', year: 'August' },
+  { img: `${base}image/g-3.webp`, name: 'ニッカボニー', year: 'October' },
+  { img: `${base}image/g-4.webp`, name: 'うちはマダラ 宇智波斑', year: 'December' },
+  { img: `${base}image/g-16.webp`, name: 'うずまきナルト 漩涡鸣人', year: '2025' },
+  { img: `${base}image/g-5.webp`, name: 'Aethel Unit - 07', year: 'July' },
+  { img: `${base}image/g-6.png`, name: 'Pressure Suit', year: 'June' },
+  { img: `${base}image/g-10-1.webp`, name: 'Music Time', year: 'December' },
+  { img: `${base}image/g-11.webp`, name: 'Follow Me', year: 'November' },
+  { img: `${base}image/g-12.webp`, name: 'Summer', year: 'November' },
+  { img: `${base}image/g-7.webp`, name: 'Aethel Unit - 07', year: 'July' },
+  { img: `${base}image/g-8.webp`, name: 'ニッカボニー', year: 'July' },
+  { img: `${base}image/g-9.webp`, name: 'UnAethel Unit - 07', year: 'October' },
+  { img: `${base}image/g-13.webp`, name: 'Ready For Hight', year: 'February' },
+  { img: `${base}image/g-14.webp`, name: 'Terminate', year: 'February' },
+  { img: `${base}image/g-15.webp`, name: 'Train', year: 'December' },
+  { img: `${base}image/g-17.webp`, name: 'Gundam SEED', year: 'December' },
 ]
 
 const ITEMS_PER_ROW = 9

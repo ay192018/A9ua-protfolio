@@ -15,7 +15,7 @@ export default function Navbar() {
       >
         {!logoError ? (
           <img
-            src="/logo.png"
+            src={`${import.meta.env.BASE_URL}logo.png`}
             alt="Logo"
             onError={() => setLogoError(true)}
             style={{
