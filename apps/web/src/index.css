@@ -5,21 +5,6 @@
   --font-sans: Greycliff, system-ui, -apple-system, sans-serif;
 }
 
-/* === Greycliff Font (same as biuxbiu.design) === */
-@font-face {
-  font-family: Greycliff;
-  src: url('/font/greycliff-500.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Greycliff;
-  src: url('/font/greycliff-800.woff2') format('woff2');
-  font-weight: 800;
-  font-style: normal;
-}
-
 @layer base {
   * {
     margin: 0;
