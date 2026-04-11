@@ -26,6 +26,11 @@ function createGearSound() {
     lastTick = now
 
     const ctx = getCtx()
+    // resume if suspended (browser autoplay policy)
+    if (ctx.state === 'suspended') {
+      ctx.resume()
+      return
+    }
     const t = ctx.currentTime
 
     const vol = Math.min(0.06 + Math.abs(velocity) * 0.015, 0.15)

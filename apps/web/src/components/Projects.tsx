@@ -60,6 +60,7 @@ function ProjectCard({ img, name, year, layoutId, onOpen }: ProjectCardProps) {
     <div className="project">
         <motion.div
           layoutId={layoutId}
+          transition={{ type: 'spring', stiffness: 280, damping: 28 }}
           className="project-img relative cursor-pointer hover:[--hover-op:1]"
           onClick={() => onOpen({ img, name, year, layoutId })}
           style={{ borderRadius: 4 }}
@@ -116,6 +117,7 @@ function Lightbox({ selected, onClose }: { selected: Selected | null; onClose: (
             >
               <motion.div
                 layoutId={selected.layoutId}
+                transition={{ type: 'spring', stiffness: 280, damping: 28 }}
                 style={{ width: '100%', borderRadius: 8, overflow: 'hidden', cursor: 'default' }}
                 onClick={(e) => e.stopPropagation()}
               >
