@@ -200,8 +200,6 @@ export default function Beebits() {
         width: '100%',
         overflowX: 'hidden',
         minHeight: '100vh',
-        background: '#ffffff',
-        color: '#0b1531',
         fontFamily: "'Greycliff', system-ui, sans-serif",
         position: 'relative',
       }}
@@ -218,6 +216,7 @@ export default function Beebits() {
           justifyContent: 'center',
           position: 'relative',
           zIndex: 1,
+          paddingTop: '60px',
         }}
       >
         <div style={{ fontSize: '16px', fontWeight: 900, display: 'flex', alignItems: 'center' }}>

@@ -80,6 +80,7 @@ html.theme-transitioning {
   body {
     width: 100vw;
     overflow-x: hidden;
+    overflow-y: scroll;
     font-family: Greycliff, system-ui, -apple-system, sans-serif;
     color: var(--fg);
   }

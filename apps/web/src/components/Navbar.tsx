@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 // Read initial theme synchronously to avoid flash
@@ -49,13 +49,13 @@ async function toggleTheme(event: MouseEvent, currentDark: boolean): Promise<boo
     // dark expanding in over light
     document.documentElement.animate(
       { clipPath: [clip0, clipFull] },
-      { duration: 550, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+      { duration: 900, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
     )
   } else {
     // dark shrinking away, revealing light underneath
     document.documentElement.animate(
       { clipPath: [clipFull, clip0] },
-      { duration: 550, easing: 'ease-in-out', pseudoElement: '::view-transition-old(root)' }
+      { duration: 900, easing: 'ease-in-out', pseudoElement: '::view-transition-old(root)' }
     )
   }
 
@@ -72,6 +72,13 @@ export default function Navbar() {
   const isHome = location.pathname === '/'
   const [logoError, setLogoError] = useState(false)
   const [dark, setDark] = useState(getInitialDark)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const handleThemeToggle = async (e: React.MouseEvent) => {
     const next = await toggleTheme(e.nativeEvent, dark)
@@ -80,6 +87,24 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Backdrop blur background layer — independent of blend mode */}
+      <div
+        className="fixed left-0 right-0 top-0 h-[60px] md:h-[88px] z-[99] transition-all duration-300"
+        style={{
+          backdropFilter: scrolled ? 'blur(12px) saturate(180%)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(12px) saturate(180%)' : 'none',
+          background: scrolled
+            ? dark
+              ? 'rgba(13,13,13,0.75)'
+              : 'rgba(255,255,255,0.75)'
+            : 'transparent',
+          borderBottom: scrolled
+            ? dark
+              ? '1px solid rgba(255,255,255,0.08)'
+              : '1px solid rgba(0,0,0,0.08)'
+            : '1px solid transparent',
+        }}
+      />
       {/* Logo — rendered outside the difference blend container so it displays normally */}
       <Link
         to="/"
@@ -134,7 +159,7 @@ export default function Navbar() {
           <button
             onClick={handleThemeToggle}
             aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="w-7 h-7 flex items-center justify-center hover:opacity-70 transition-opacity text-white"
+            className="w-7 h-7 flex items-center justify-center hover:opacity-70 transition-opacity text-white cursor-pointer"
           >
             {dark ? (
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
