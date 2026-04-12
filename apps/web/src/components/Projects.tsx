@@ -195,16 +195,17 @@ export default function Projects() {
     updateLayout()
 
     function onScroll() {
+      const scrollY = window.scrollY
       const viewportH = window.innerHeight
-      // Read all rects first, then write — avoids layout thrashing
-      const rects = rowEls.map(row => row?.getBoundingClientRect())
-      rects.forEach((rect, i) => {
-        const row = rowEls[i]
-        if (!row || !rect) return
-        const rangeStart = -rect.height
-        const rangeEnd = viewportH
-        let progress = (rect.top - rangeStart) / (rangeEnd - rangeStart)
-        progress = 1 - Math.max(0, Math.min(1, progress))
+      rowEls.forEach((row) => {
+        if (!row) return
+        const rect = row.getBoundingClientRect()
+        const rowTop = rect.top + scrollY
+        const rowBottom = rowTop + rect.height
+        const rangeStart = rowTop - viewportH
+        const rangeEnd = rowBottom
+        let progress = (scrollY - rangeStart) / (rangeEnd - rangeStart)
+        progress = Math.max(0, Math.min(1, progress))
         const width = minWidth.current + (maxWidth.current - minWidth.current) * progress
         row.style.width = `${width}%`
       })

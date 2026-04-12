@@ -26,40 +26,43 @@ function createGearSound() {
     lastTick = now
 
     const ctx = getCtx()
-    // resume if suspended (browser autoplay policy)
+
+    const play = () => {
+      const t = ctx.currentTime
+      const vol = Math.min(0.06 + Math.abs(velocity) * 0.015, 0.15)
+      const bufferSize = Math.floor(ctx.sampleRate * 0.012)
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
+      const data = buffer.getChannelData(0)
+      for (let i = 0; i < bufferSize; i++) {
+        const env = Math.exp(-i / (bufferSize * 0.15))
+        data[i] = (Math.random() * 2 - 1) * env
+      }
+      const source = ctx.createBufferSource()
+      source.buffer = buffer
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'bandpass'
+      filter.frequency.value = 2800 + Math.random() * 800
+      filter.Q.value = 3
+      const gain = ctx.createGain()
+      gain.gain.setValueAtTime(vol, t)
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04)
+      source.connect(filter)
+      filter.connect(gain)
+      gain.connect(ctx.destination)
+      source.start(t)
+      source.stop(t + 0.05)
+    }
+
     if (ctx.state === 'suspended') {
-      ctx.resume()
-      return
+      ctx.resume().then(play)
+    } else {
+      play()
     }
-    const t = ctx.currentTime
+  }
 
-    const vol = Math.min(0.06 + Math.abs(velocity) * 0.015, 0.15)
-
-    const bufferSize = Math.floor(ctx.sampleRate * 0.012)
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
-    const data = buffer.getChannelData(0)
-    for (let i = 0; i < bufferSize; i++) {
-      const env = Math.exp(-i / (bufferSize * 0.15))
-      data[i] = (Math.random() * 2 - 1) * env
-    }
-
-    const source = ctx.createBufferSource()
-    source.buffer = buffer
-
-    const filter = ctx.createBiquadFilter()
-    filter.type = 'bandpass'
-    filter.frequency.value = 2800 + Math.random() * 800
-    filter.Q.value = 3
-
-    const gain = ctx.createGain()
-    gain.gain.setValueAtTime(vol, t)
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04)
-
-    source.connect(filter)
-    filter.connect(gain)
-    gain.connect(ctx.destination)
-    source.start(t)
-    source.stop(t + 0.05)
+  function prewarm() {
+    const ctx = getCtx()
+    if (ctx.state === 'suspended') ctx.resume()
   }
 
   function destroy() {
@@ -69,7 +72,7 @@ function createGearSound() {
     }
   }
 
-  return { tick, destroy }
+  return { tick, prewarm, destroy }
 }
 
 function HomePage() {
@@ -87,6 +90,15 @@ function HomePage() {
 
     const gear = createGearSound()
     gearRef.current = gear
+
+    // Resume AudioContext on first real user interaction
+    const prewarm = () => {
+      gear.prewarm()
+      window.removeEventListener('pointerdown', prewarm)
+      window.removeEventListener('keydown', prewarm)
+    }
+    window.addEventListener('pointerdown', prewarm)
+    window.addEventListener('keydown', prewarm)
 
     let accum = 0
     const TICK_EVERY = 35
@@ -111,12 +123,14 @@ function HomePage() {
       requestAnimationFrame(raf)
     }
     requestAnimationFrame(raf)
-
+    document.body.click()
     return () => {
       lenis.destroy()
       gear.destroy()
       window.removeEventListener('lenis:lock', handleLock)
       window.removeEventListener('lenis:unlock', handleUnlock)
+      window.removeEventListener('pointerdown', prewarm)
+      window.removeEventListener('keydown', prewarm)
     }
   }, [])
 
