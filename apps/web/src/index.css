@@ -5,6 +5,62 @@
   --font-sans: Greycliff, system-ui, -apple-system, sans-serif;
 }
 
+/* === Theme tokens === */
+:root {
+  --bg: #ffffff;
+  --fg: #0b1531;
+  --scrollbar-track: #ffffff;
+  --scrollbar-thumb: rgba(0,0,0,0.15);
+  --scrollbar-thumb-hover: rgba(0,0,0,0.3);
+  --skeleton-from: #fafafb;
+  --skeleton-to: #f1f2f6;
+  --copyright: rgba(0,0,0,0.2);
+}
+
+html.dark {
+  --bg: #0d0d0d;
+  --fg: #e8e8e8;
+  --scrollbar-track: #0d0d0d;
+  --scrollbar-thumb: rgba(255,255,255,0.15);
+  --scrollbar-thumb-hover: rgba(255,255,255,0.3);
+  --skeleton-from: #1a1a1a;
+  --skeleton-to: #222222;
+  --copyright: rgba(255,255,255,0.2);
+}
+
+/* === View Transition: disable default fade, let JS animate clip-path === */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Ensure transition overlay sits above framer-motion portals and fixed elements */
+:root::view-transition-group(root) {
+  z-index: 2147483647;
+}
+
+/* Default: new layer on top (light→dark: dark expands in) */
+::view-transition-new(root) {
+  z-index: 1;
+}
+::view-transition-old(root) {
+  z-index: 0;
+}
+
+/* dark→light: old (dark) layer must be on top so it can shrink away */
+[data-theme-to="light"]::view-transition-old(root) {
+  z-index: 1;
+}
+[data-theme-to="light"]::view-transition-new(root) {
+  z-index: 0;
+}
+
+/* During transition, collapse stacking contexts so view-transition sits on top */
+html.theme-transitioning {
+  isolation: isolate;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -13,8 +69,8 @@
   }
 
   html {
-    background: #fff;
-    color: #0b1531;
+    background: var(--bg);
+    color: var(--fg);
     font-family: Greycliff, system-ui, -apple-system, sans-serif;
     line-height: normal;
     -webkit-font-smoothing: antialiased;
@@ -25,7 +81,7 @@
     width: 100vw;
     overflow-x: hidden;
     font-family: Greycliff, system-ui, -apple-system, sans-serif;
-    color: #0b1531;
+    color: var(--fg);
   }
 
   html.lenis, html.lenis body {
@@ -124,16 +180,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #fff;
+    background: var(--scrollbar-track);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--scrollbar-thumb);
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--scrollbar-thumb-hover);
   }
 }
 

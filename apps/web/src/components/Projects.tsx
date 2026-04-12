@@ -73,7 +73,7 @@ function ProjectCard({ img, name, year, layoutId, onOpen }: ProjectCardProps) {
             <span>View</span>
           </div>
           {!loaded && (
-            <div className="absolute inset-0 bg-linear-to-r from-[#fafafb] to-[#f1f2f6] animate-pulse" />
+            <div className="absolute inset-0 animate-pulse" style={{ background: 'linear-gradient(to right, var(--skeleton-from), var(--skeleton-to))' }} />
           )}
           <img
             alt={name}
@@ -196,10 +196,11 @@ export default function Projects() {
 
     function onScroll() {
       const viewportH = window.innerHeight
-      rowEls.forEach((row) => {
-        if (!row) return
-        const rect = row.getBoundingClientRect()
-        // use viewport-relative position, works correctly with Lenis on mobile
+      // Read all rects first, then write — avoids layout thrashing
+      const rects = rowEls.map(row => row?.getBoundingClientRect())
+      rects.forEach((rect, i) => {
+        const row = rowEls[i]
+        if (!row || !rect) return
         const rangeStart = -rect.height
         const rangeEnd = viewportH
         let progress = (rect.top - rangeStart) / (rangeEnd - rangeStart)

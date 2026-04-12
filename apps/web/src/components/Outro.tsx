@@ -77,7 +77,7 @@ export default function Outro() {
       <p className="font-[500] text-[clamp(14px,1vw,40px)]">
         <OutroText text="weChat: Pinia2018" startDelay={0} />
       </p>
-      <div className="absolute left-[50%] bottom-[20px] -translate-x-[50%] text-[14px] text-[rgba(0,0,0,0.2)]">
+      <div className="absolute left-[50%] bottom-[20px] -translate-x-[50%] text-[14px]" style={{ color: 'var(--copyright)' }}>
         Copyright &copy; {new Date().getFullYear()} [ Studio Portfolio ] . All rights reserved.
       </div>
     </section>
