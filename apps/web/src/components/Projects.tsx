@@ -29,8 +29,9 @@ const originalProjects: ProjectData[] = [
   { img: `${base}image/g-17.webp`, name: 'Gundam SEED', year: 'December' },
 ]
 
-const ITEMS_PER_ROW = 9
-const ROW_COUNT = 10
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+const ITEMS_PER_ROW = isMobile ? 3 : 9
+const ROW_COUNT = isMobile ? 15 : 10
 
 interface Selected {
   img: string
@@ -172,9 +173,9 @@ export default function Projects() {
     const container = containerRef.current
     if (!container) return
     const rowEls = rowRefs.current
-    const isMobile = window.innerWidth < 1000
-    minWidth.current = isMobile ? 250 : 125
-    maxWidth.current = isMobile ? 750 : 500
+    const isMobile = window.innerWidth < 768
+    minWidth.current = isMobile ? 120 : 125
+    maxWidth.current = isMobile ? 300 : 500
 
     const firstRow = rowEls[0]
     if (!firstRow) return
