@@ -79,12 +79,12 @@ function HomePage() {
   const gearRef = useRef<ReturnType<typeof createGearSound> | null>(null)
 
   useEffect(() => {
-    const lenis = new Lenis({
+     const lenis = new Lenis({
       autoRaf: false,
-      lerp: 0.07,
+      lerp: 0.12,
       smoothWheel: true,
-      touchMultiplier: 1,
-      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      wheelMultiplier: 1.2,
       infinite: false,
     })
 
