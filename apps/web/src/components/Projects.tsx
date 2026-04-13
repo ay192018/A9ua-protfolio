@@ -205,7 +205,7 @@ export default function Projects() {
     const rowEls = rowRefs.current
     updateLayout()
 
-        function onScroll() {
+         function onScroll() {
       const scrollY = window.scrollY
       const viewportH = window.innerHeight
       rowEls.forEach((row) => {
@@ -220,18 +220,6 @@ export default function Projects() {
         const width = minWidth.current + (maxWidth.current - minWidth.current) * progress
         row.style.width = `${width}%`
       })
-
-      // 滚动时实时更新容器高度，让高度跟随宽度变化
-      if (container) {
-        let totalH = 0
-        rowEls.forEach((row) => {
-          if (row) totalH += row.offsetHeight
-        })
-        const gap = parseFloat(getComputedStyle(container).gap) || 0
-        const paddingTop = parseFloat(getComputedStyle(container).paddingTop) || 0
-        totalH += gap * (rowEls.length - 1) + paddingTop * 2
-        container.style.height = `${totalH}px`
-      }
     }
 
 
