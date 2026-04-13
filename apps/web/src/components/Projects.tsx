@@ -184,8 +184,8 @@ export default function Projects() {
     if (!container) return
     const rowEls = rowRefs.current
     const mobile = window.innerWidth < 768
-    minWidth.current = mobile ? 100 : 125
-    maxWidth.current = mobile ? 250 : 500
+     minWidth.current = mobile ? 250 : 125
+    maxWidth.current = mobile ? 750 : 500
 
     const firstRow = rowEls[0]
     if (!firstRow) return
