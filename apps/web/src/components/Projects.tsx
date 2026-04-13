@@ -205,9 +205,10 @@ export default function Projects() {
     const rowEls = rowRefs.current
     updateLayout()
 
-         function onScroll() {
+    function onScroll() {
       const scrollY = window.scrollY
       const viewportH = window.innerHeight
+      const containerW = container ? container.offsetWidth : window.innerWidth
       rowEls.forEach((row) => {
         if (!row) return
         const rect = row.getBoundingClientRect()
@@ -217,8 +218,15 @@ export default function Projects() {
         const rangeEnd = rowBottom
         let progress = (scrollY - rangeStart) / (rangeEnd - rangeStart)
         progress = Math.max(0, Math.min(1, progress))
-        const width = minWidth.current + (maxWidth.current - minWidth.current) * progress
-        row.style.width = `${width}%`
+        const widthPct = minWidth.current + (maxWidth.current - minWidth.current) * progress
+        row.style.width = `${widthPct}%`
+        // 手动计算行高，不依赖 aspect-ratio 的动态更新
+        const rowPx = containerW * widthPct / 100
+        const itemCount = row.children.length
+        const gap = parseFloat(getComputedStyle(row).gap) || 0
+        const itemW = (rowPx - gap * (itemCount - 1)) / itemCount
+        const itemH = itemW * 5 / 7  // aspect-ratio 7/5 → 高度 = 宽度 * 5/7
+        row.style.height = `${itemH + 20}px`  // +20 给 project-info 文字留空间
       })
     }
 
