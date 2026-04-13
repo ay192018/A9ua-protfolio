@@ -205,43 +205,33 @@ export default function Projects() {
     const rowEls = rowRefs.current
     updateLayout()
 
-        function onScroll() {
+    function onScroll() {
       const scrollY = window.scrollY
       const viewportH = window.innerHeight
-      
+      const containerW = container ? container.offsetWidth : window.innerWidth
       rowEls.forEach((row) => {
         if (!row) return
         const rect = row.getBoundingClientRect()
-        const rowTopInView = rect.top  // 距离视口顶部的距离
-        const rowBottomInView = rect.bottom
-        
-        // 当行顶部进入视口时 progress=0，当行底部离开视口时 progress=1
-        let progress
-        if (rowTopInView > viewportH) {
-          // 行还在视口上方，还没开始
-          progress = 0
-        } else if (rowBottomInView < 0) {
-          // 行已经滚出视口下方，已经结束
-          progress = 1
-        } else {
-          // 行在视口内滚动
-          progress = (viewportH - rowTopInView) / (viewportH + rowBottomInView - rowTopInView)
-        }
+        const rowTop = rect.top + scrollY
+        const rowBottom = rowTop + rect.height
+        const rangeStart = rowTop - viewportH
+        const rangeEnd = rowBottom
+        let progress = (scrollY - rangeStart) / (rangeEnd - rangeStart)
         progress = Math.max(0, Math.min(1, progress))
-        
         const widthPct = minWidth.current + (maxWidth.current - minWidth.current) * progress
         row.style.width = `${widthPct}%`
-        
-        // 手动计算行高
-        const containerW = container ? container.offsetWidth : window.innerWidth
-        const rowPx = containerW * widthPct / 100
-        const itemCount = row.children.length
-        const gap = parseFloat(getComputedStyle(row).gap) || 0
-        const itemW = (rowPx - gap * (itemCount - 1)) / itemCount
-        const itemH = itemW * 5 / 7
-        row.style.height = `${itemH + 20}px`
+        // 移动端手动设置行高，修复 Safari aspect-ratio 不更新的问题
+        if (window.innerWidth < 768) {
+          const rowPx = containerW * widthPct / 100
+          const itemCount = row.children.length
+          const gap = parseFloat(getComputedStyle(row).gap) || 0
+          const itemW = (rowPx - gap * (itemCount - 1)) / itemCount
+          const itemH = itemW * 5 / 7
+          row.style.height = `${itemH + 20}px`
+        }
       })
     }
+
 
 
 
