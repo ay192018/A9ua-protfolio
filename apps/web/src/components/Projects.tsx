@@ -32,7 +32,7 @@ const originalProjects: ProjectData[] = [
 function getLayoutConfig() {
   if (typeof window === 'undefined') return { itemsPerRow: 9, rowCount: 10 }
   const w = window.innerWidth
-  if (w < 768) return { itemsPerRow: 3, rowCount: 15 }
+  if (w < 768) return { itemsPerRow: 5, rowCount: 12 }
   return { itemsPerRow: 9, rowCount: 10 }
 }
 
@@ -184,8 +184,8 @@ export default function Projects() {
     if (!container) return
     const rowEls = rowRefs.current
     const mobile = window.innerWidth < 768
-     minWidth.current = mobile ? 250 : 125
-    maxWidth.current = mobile ? 750 : 500
+    minWidth.current = mobile ? 110 : 125
+    maxWidth.current = mobile ? 500 : 500
 
     const firstRow = rowEls[0]
     if (!firstRow) return
