@@ -29,9 +29,12 @@ const originalProjects: ProjectData[] = [
   { img: `${base}image/g-17.webp`, name: 'Gundam SEED', year: 'December' },
 ]
 
-const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-const ITEMS_PER_ROW = isMobile ? 3 : 9
-const ROW_COUNT = isMobile ? 15 : 10
+function getLayoutConfig() {
+  if (typeof window === 'undefined') return { itemsPerRow: 9, rowCount: 10 }
+  const w = window.innerWidth
+  if (w < 768) return { itemsPerRow: 3, rowCount: 15 }
+  return { itemsPerRow: 9, rowCount: 10 }
+}
 
 interface Selected {
   img: string
@@ -154,12 +157,19 @@ export default function Projects() {
   const containerRef = useRef<HTMLElement>(null)
   const rowRefs = useRef<HTMLDivElement[]>([])
   const [selected, setSelected] = useState<Selected | null>(null)
+  const [layout, setLayout] = useState(getLayoutConfig)
+
+  useEffect(() => {
+    function onResize() { setLayout(getLayoutConfig()) }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const rows: (ProjectData & { layoutId: string })[][] = []
   let idx = 0
-  for (let r = 0; r < ROW_COUNT; r++) {
+  for (let r = 0; r < layout.rowCount; r++) {
     const row = []
-    for (let c = 0; c < ITEMS_PER_ROW; c++) {
+    for (let c = 0; c < layout.itemsPerRow; c++) {
       row.push({ ...originalProjects[idx % originalProjects.length], layoutId: `proj-${idx}` })
       idx++
     }
@@ -173,9 +183,9 @@ export default function Projects() {
     const container = containerRef.current
     if (!container) return
     const rowEls = rowRefs.current
-    const isMobile = window.innerWidth < 768
-    minWidth.current = isMobile ? 120 : 125
-    maxWidth.current = isMobile ? 300 : 500
+    const mobile = window.innerWidth < 768
+    minWidth.current = mobile ? 100 : 125
+    maxWidth.current = mobile ? 250 : 500
 
     const firstRow = rowEls[0]
     if (!firstRow) return
