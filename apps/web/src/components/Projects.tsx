@@ -189,30 +189,16 @@ export default function Projects() {
 
     const firstRow = rowEls[0]
     if (!firstRow) return
+    firstRow.style.width = `${maxWidth.current}%`
+    const rowHeight = firstRow.offsetHeight
+    firstRow.style.width = ''
 
-    if (mobile) {
-      // 移动端：用 minWidth 计算初始高度，不依赖 aspect-ratio
-      const containerW = container.offsetWidth
-      const rowPx = containerW * minWidth.current / 100
-      const itemCount = firstRow.children.length
-      const gapVal = parseFloat(getComputedStyle(container).gap) || 0
-      const rowGapVal = parseFloat(getComputedStyle(firstRow).gap) || 0
-      const itemW = (rowPx - rowGapVal * (itemCount - 1)) / itemCount
-      const rowHeight = itemW * 5 / 7 + 20
-      const paddingTop = parseFloat(getComputedStyle(container).paddingTop) || 0
-      const totalHeight = rowHeight * rowEls.length + gapVal * (rowEls.length - 1) + paddingTop * 2
-      container.style.height = `${totalHeight}px`
-    } else {
-      // 桌面端：保持原逻辑
-      firstRow.style.width = `${maxWidth.current}%`
-      const rowHeight = firstRow.offsetHeight
-      firstRow.style.width = ''
-      const gap = parseFloat(getComputedStyle(container).gap) || 0
-      const paddingTop = parseFloat(getComputedStyle(container).paddingTop) || 0
-      const totalHeight = rowHeight * rowEls.length + gap * (rowEls.length - 1) + paddingTop * 2
-      container.style.height = `${totalHeight}px`
-    }
+    const gap = parseFloat(getComputedStyle(container).gap) || 0
+    const paddingTop = parseFloat(getComputedStyle(container).paddingTop) || 0
+    const totalHeight = rowHeight * rowEls.length + gap * (rowEls.length - 1) + paddingTop * 2
+    container.style.height = `${totalHeight}px`
   }, [])
+
 
 
   useEffect(() => {
