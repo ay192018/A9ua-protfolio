@@ -205,10 +205,13 @@ export default function Projects() {
     const rowEls = rowRefs.current
     updateLayout()
 
+    const isMobile = window.innerWidth < 768
+    const rowGap = isMobile ? parseFloat(getComputedStyle(container).gap) || 0 : 0
+    const containerW = container.offsetWidth
+
     function onScroll() {
       const scrollY = window.scrollY
       const viewportH = window.innerHeight
-      const containerW = container ? container.offsetWidth : window.innerWidth
       rowEls.forEach((row) => {
         if (!row) return
         const rect = row.getBoundingClientRect()
@@ -220,17 +223,23 @@ export default function Projects() {
         progress = Math.max(0, Math.min(1, progress))
         const widthPct = minWidth.current + (maxWidth.current - minWidth.current) * progress
         row.style.width = `${widthPct}%`
-        // 移动端手动设置行高，修复 Safari aspect-ratio 不更新的问题
-        if (window.innerWidth < 768) {
+        if (isMobile) {
           const rowPx = containerW * widthPct / 100
           const itemCount = row.children.length
-          const gap = parseFloat(getComputedStyle(row).gap) || 0
-          const itemW = (rowPx - gap * (itemCount - 1)) / itemCount
+          const itemW = (rowPx - rowGap * (itemCount - 1)) / itemCount
           const itemH = itemW * 5 / 7
           row.style.height = `${itemH + 20}px`
+          // 同时强制每个卡片的高度
+          for (let i = 0; i < row.children.length; i++) {
+            const card = row.children[i] as HTMLElement
+            card.style.height = `${itemH + 20}px`
+            const imgDiv = card.querySelector('.project-img') as HTMLElement
+            if (imgDiv) imgDiv.style.height = `${itemH}px`
+          }
         }
       })
     }
+
 
 
 
