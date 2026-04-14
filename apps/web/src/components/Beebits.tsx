@@ -207,18 +207,9 @@ export default function Beebits() {
       <MouseTrail />
 
       <div
-          style={{
-          width: window.innerWidth < 768 ? '92%' : '80%',
-          margin: '0 auto',
-          minHeight: 'calc(100vh - 120px)',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          paddingTop: window.innerWidth < 768 ? '80px' : '60px',
-          paddingBottom: '40px',
-        }}
-
+        className="w-[92%] md:w-[80%] mx-auto min-h-[calc(100vh-120px)] flex flex-col relative pt-[80px] md:pt-[60px] pb-10"
       >
+
         <div style={{ fontSize: '16px', fontWeight: 900, display: 'flex', alignItems: 'center' }}>
           THE THINKING OF AI
         </div>
@@ -235,12 +226,9 @@ export default function Beebits() {
         </div>
 
         <div
-              style={{
-              display: 'grid',
-              gridTemplateColumns: window.innerWidth < 768 ? '1fr' : 'repeat(2, 1fr)',
-              gap: window.innerWidth < 768 ? '12px' : '20px',
-
+          className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5"
         >
+
           {/* Left column */}
           <div>
             <motion.div initial="hidden" animate="visible" variants={containerVariants}>
