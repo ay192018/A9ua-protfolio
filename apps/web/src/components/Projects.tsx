@@ -179,7 +179,7 @@ export default function Projects() {
   const minWidth = useRef(125)
   const maxWidth = useRef(500)
 
-  const updateLayout = useCallback(() => {
+    const updateLayout = useCallback(() => {
     const container = containerRef.current
     if (!container) return
     const rowEls = rowRefs.current
@@ -189,15 +189,21 @@ export default function Projects() {
 
     const firstRow = rowEls[0]
     if (!firstRow) return
+
+    // 用 maxWidth 测量单行最大高度
     firstRow.style.width = `${maxWidth.current}%`
-    const rowHeight = firstRow.offsetHeight
+    const maxRowHeight = firstRow.offsetHeight
     firstRow.style.width = ''
 
+    // 容器高度 = 每行最大高度 × 行数 × 倍率
+    // 需要足够的滚动空间让每一行都能完整从 min 展开到 max
     const gap = parseFloat(getComputedStyle(container).gap) || 0
     const paddingTop = parseFloat(getComputedStyle(container).paddingTop) || 0
-    const totalHeight = rowHeight * rowEls.length + gap * (rowEls.length - 1) + paddingTop * 2
+    const scrollMultiplier = mobile ? 3 : 2
+    const totalHeight = maxRowHeight * rowEls.length * scrollMultiplier + gap * (rowEls.length - 1) + paddingTop * 2
     container.style.height = `${totalHeight}px`
   }, [])
+
 
 
 
