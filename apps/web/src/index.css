@@ -59,7 +59,12 @@ html.dark {
 /* During transition, collapse stacking contexts so view-transition sits on top */
 html.theme-transitioning {
   isolation: isolate;
+  overflow: hidden;
 }
+html.theme-transitioning body {
+  overflow: hidden;
+}
+
 
 @layer base {
   * {
