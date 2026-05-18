@@ -46,16 +46,14 @@ async function toggleTheme(event: MouseEvent, currentDark: boolean): Promise<boo
   const clipFull = `circle(${endRadius}px at ${x}px ${y}px)`
 
   if (nextDark) {
-    // dark expanding in over light
     document.documentElement.animate(
       { clipPath: [clip0, clipFull] },
-      { duration: 900, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+      { duration: 900, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)', fill: 'forwards' }
     )
   } else {
-    // dark shrinking away, revealing light underneath
     document.documentElement.animate(
       { clipPath: [clipFull, clip0] },
-      { duration: 900, easing: 'ease-in-out', pseudoElement: '::view-transition-old(root)' }
+      { duration: 900, easing: 'ease-in-out', pseudoElement: '::view-transition-old(root)', fill: 'forwards' }
     )
   }
 
