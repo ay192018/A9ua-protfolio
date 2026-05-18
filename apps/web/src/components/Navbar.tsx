@@ -39,11 +39,11 @@ async function toggleTheme(event: MouseEvent, currentDark: boolean): Promise<boo
   document.documentElement.dataset.themeTo = nextDark ? 'dark' : 'light'
   document.documentElement.classList.add('theme-transitioning')
 
-  const transition = document.startViewTransition(() => applyTheme(nextDark))
-  await transition.ready
-
   const clip0 = `circle(0px at ${x}px ${y}px)`
   const clipFull = `circle(${endRadius}px at ${x}px ${y}px)`
+
+  const transition = document.startViewTransition(() => applyTheme(nextDark))
+  await transition.ready
 
   if (nextDark) {
     document.documentElement.animate(
@@ -57,10 +57,9 @@ async function toggleTheme(event: MouseEvent, currentDark: boolean): Promise<boo
     )
   }
 
-  transition.finished.then(() => {
-    delete document.documentElement.dataset.themeTo
-    document.documentElement.classList.remove('theme-transitioning')
-  })
+  await transition.finished
+  delete document.documentElement.dataset.themeTo
+  document.documentElement.classList.remove('theme-transitioning')
 
   return nextDark
 }
