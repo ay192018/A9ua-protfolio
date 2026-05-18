@@ -43,6 +43,7 @@ html.dark {
 /* Default: new layer on top (light→dark: dark expands in) */
 ::view-transition-new(root) {
   z-index: 1;
+  clip-path: circle(0px at 0px 0px);
 }
 ::view-transition-old(root) {
   z-index: 0;
